@@ -9,7 +9,9 @@ from datetime import datetime
 
 
 class BaseModel:
-    """Defines the BaseModel class for other classes to inherit"""
+    """BaseModel - this class serves as a super class to all classes.
+       Subclasses will inherit from this throughout in this project
+    """
 
     def __init__(self, *args, **kwargs):
         """Initialize id, create_at, and updated_at
@@ -39,12 +41,8 @@ class BaseModel:
             self.updated_at = datetime.now()
 
     def __str__(self):
-        """Return a string representation of the BaseModel instance"""
+        """Print a nice string representation of the class"""
         return f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}"
-
-    def save(self):
-        """Update the updated_at attribute with the current datetime"""
-        self.updated_at = datetime.now()
 
     def to_dict(self):
         """Create and return a dictionary representation
@@ -63,3 +61,11 @@ class BaseModel:
                                     '%Y-%m-%dT%H:%M:%S.%f')
 
         return obj_dict
+
+    def save(self):
+        """
+        updates the public instance attribute updated_at with -
+        the current datetime
+        """
+
+        self.updated_at = datetime.now()
