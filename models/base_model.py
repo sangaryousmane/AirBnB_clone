@@ -15,14 +15,14 @@ class BaseModel:
 
         self.id = str(uuid4())
         self.created_at = datetime.now()
-        sel.updated_at = datetime.now()
+        self.updated_at = datetime.now()
 
     def __str__(self):
         """
         Print a nice string representation of the class.
         """
 
-        return f'[{self.__name__}] ({self.id}) {self.__dict__}'
+        return f'[{self.name}] ({self.id}) {self.__dict__}'
 
     def save(self):
         """
