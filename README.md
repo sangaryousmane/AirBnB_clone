@@ -1,6 +1,6 @@
 # 0x00. AirBnB clone - The console
 
-<img src="airbnb.png" width="1000" height="500"/>
+<img src="airbnb.png" width="1000" height="400"/>
 
 ## Synopsis
 
