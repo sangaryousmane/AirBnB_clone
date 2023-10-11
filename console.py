@@ -4,6 +4,7 @@ command interpreter, the AirBnB Console Application.
 """
 
 import cmd
+import shlex
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
@@ -111,6 +112,66 @@ class HBNBCommand(cmd.Cmd):
         else:
             formatted_list = [str(obj) for obj in obj_list]
             print(formatted_list)
+
+    def do_update(self, args):
+        """Updates an instance based on the class name
+           and id given as args by adding or updating
+           attribute & save changes into JSON file.
+        """
+        args = shlex.split(args)  # split command into tokens
+
+        if len(args) == 0:
+            print("** class name missing **")
+            return
+
+        cls_name = args[0]
+
+        # check if class name exists in modules {}
+        if cls_name not in modules:
+            print("** class doesn't exist **")
+            return
+
+        if len(args) < 2:
+            print("** instance id missing **")
+            return
+
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return
+
+        if len(args) < 4:
+            print("** value missing **")
+            return
+
+        obj_id = args[1]
+        attr_name = args[2]
+        attr_val = args[3]
+
+        key = "{}.{}".format(cls_name, obj_id)
+
+        # Retrieve the object from storage
+        obj_dict = storage.all()
+
+        if key not in obj_dict:
+            print("** no instance found **")
+            return
+
+        obj = obj_dict[key]
+
+        try:
+            attr = getattr(obj, attr_name)
+            attr_type = type(attr)
+            attr_val = attr_type(attr_val)
+
+        except AttributeError:
+            pass
+        except (ValueError, TypeError):
+            # might not be neccessary, delete later
+            print("** value missing **")
+
+        # update the instance attribute
+        setattr(obj, attr_name, attr_val)
+        obj.save()
 
     @staticmethod
     def is_classname_valid(args, check_id=False) -> bool:
