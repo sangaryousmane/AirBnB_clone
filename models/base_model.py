@@ -51,17 +51,12 @@ class BaseModel:
            of the instance's attributes
         """
 
-        # copy the instance's dictionary &
-        # add __class__ key to dict with the class name
         obj_dict = self.__dict__.copy()
         obj_dict['__class__'] = self.__class__.__name__
-
-        # convert created_at, updated_at to string using strftime()
         obj_dict['created_at'] = self.created_at.strftime(
                                     '%Y-%m-%dT%H:%M:%S.%f')
         obj_dict['updated_at'] = self.updated_at.strftime(
                                     '%Y-%m-%dT%H:%M:%S.%f')
-
         return obj_dict
 
     def save(self):
@@ -72,3 +67,15 @@ class BaseModel:
 
         self.updated_at = datetime.now()
         models.storage.save()
+
+    def to_dict(self):
+        """
+        returns a dictionary containing all keys/values -
+        of __dict__ of the instance
+        """
+        class_dict = {**self.__dict__}
+        class_dict["__class__"] = type(self).__name__
+        class_dict["created_at"] = class_dict["created_at"].isoformat()
+        class_dict["updated_at"] = class_dict["updated_at"].isoformat()
+
+        return class_dict
