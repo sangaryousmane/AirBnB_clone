@@ -5,6 +5,10 @@ command interpreter, the AirBnB console application.
 """
 
 import cmd
+from models.base_model import BaseModel
+from models import storage
+
+modules = {"BaseModel": BaseModel}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -24,6 +28,70 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Prints nothing when an emtpy line is passed."""
         pass
+
+    def do_create(self, arg):
+        """ Creates a new instance of BaseModel,
+        saves it (to the JSON file) and prints the id. Ex: $ create BaseModel
+        """
+        args = arg.split()
+
+        if not self.is_classname_valid(args):
+            return
+
+        new_obj = modules[args[0]]()
+        new_obj.save()
+        print(new_obj.id)
+
+    def do_show(self, arg):
+        """ Prints the string representation of an instance
+        based on the class name and id
+        """
+        args = arg.split()
+
+        if not self.is_classname_valid(args, check_id=True):
+            return
+
+        all_obj = storage.all()
+        key = f'{args[0]}.{args[1]}'
+        show_instances = all_obj.get(key, None)
+        if show_instances is None:
+            print("** no instance found **")
+            return
+
+        print(show_instances)
+
+    def do_destroy(self, arg):
+        """ Deletes an instance based on the class name and
+        id (save the change into the JSON file).
+        """
+        args = arg.split()
+        if not self.is_classname_valid(args, check_id=True):
+            return
+
+        all_obj = storage.all()
+        key = f'{args[0]}.{args[1]}'
+        show_instances = all_obj.get(key, None)
+
+        if show_instances is None:
+            print(" ** no instance found **")
+        print(show_instances)
+
+        del all_obj[key]
+        storage.save()
+
+    def is_classname_valid(self, args, check_id=False) -> bool:
+        """ Validates classname, length of arugment, missing classname et al.
+        """
+        if len(args) < 1:
+            print("** class name missing **")
+            return False
+        if args[0] not in modules.keys():
+            print("** class doesn't exist **")
+            return False
+        if len(args) < 2 and check_id:
+            print("** instance id missing **")
+            return False
+        return True
 
 
 if __name__ == "__main__":
