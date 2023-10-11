@@ -6,6 +6,8 @@ and deserializes JSON file to instances
 import json
 from os.path import exists
 from models.base_model import BaseModel
+from models.user import User
+
 
 class FileStorage:
     """ Serialize and deserializes JSON file instances"""
@@ -39,7 +41,7 @@ class FileStorage:
         otherwise, do nothing. If the file doesn’t exist,
         no exception should be raised)
         """
-        modules = {"BaseModel": BaseModel}
+        modules = {"BaseModel": BaseModel, "User": User}
 
         if not exists(FileStorage.__file_path):
             return

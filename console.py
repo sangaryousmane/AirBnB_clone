@@ -1,14 +1,14 @@
 #!/usr/bin/python3
-
 """This module defines the entry point of the
 command interpreter, the AirBnB console application.
 """
 
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
-modules = {"BaseModel": BaseModel}
+modules = {'BaseModel': BaseModel, 'User': User}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -35,7 +35,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not self.is_classname_valid(args):
+        if not HBNBCommand.is_classname_valid(args):
             return
 
         new_obj = modules[args[0]]()
@@ -48,7 +48,7 @@ class HBNBCommand(cmd.Cmd):
         """
         args = arg.split()
 
-        if not self.is_classname_valid(args, check_id=True):
+        if not HBNBCommand.is_classname_valid(args, check_id=True):
             return
 
         all_obj = storage.all()
@@ -65,7 +65,7 @@ class HBNBCommand(cmd.Cmd):
         id (save the change into the JSON file).
         """
         args = arg.split()
-        if not self.is_classname_valid(args, check_id=True):
+        if not HBNBCommand.is_classname_valid(args, check_id=True):
             return
 
         all_obj = storage.all()
@@ -79,7 +79,8 @@ class HBNBCommand(cmd.Cmd):
         del all_obj[key]
         storage.save()
 
-    def is_classname_valid(self, args, check_id=False) -> bool:
+    @staticmethod
+    def is_classname_valid(args, check_id=False) -> bool:
         """ Validates classname, length of arugment, missing classname et al.
         """
         if len(args) < 1:
