@@ -2,8 +2,10 @@
 """This module defines tests for the BaseModel class"""
 
 from datetime import datetime
+from io import StringIO
 from models.base_model import BaseModel
 import models
+import sys
 import unittest
 
 
@@ -48,6 +50,39 @@ class TestBaseModel_init(unittest.TestCase):
         """Test instances unique ids"""
         new_obj = BaseModel()
         self.assertNotEqual(self.obj.id, new_obj.id)
+
+
+class TestBase_str_method(unittest.TestCase):
+    """Defines test cases for the __str__ method"""
+
+    def setUp(self):
+        """sets up an instance for testing"""
+        self.obj = BaseModel()
+
+    def tearDown(self):
+        """clean up, delete an instance after testing"""
+        del self.obj
+
+    def test_str_output(self):
+        """Test __str__ method output"""
+        cls_name = self.obj.__class__.__name__
+        output = "[{}] ({}) {}".format(cls_name, self.obj.id,
+                                       self.obj.__dict__)
+        self.assertEqual(output, self.obj.__str__())
+
+        # capture the output screenshot and compare
+        # instance's class name & id
+        tmp = sys.stdout
+        instance_id = self.obj.id
+        cpt_output = StringIO()
+        sys.stdout = cpt_output
+        print(self.obj)
+
+        cpt = cpt_output.getvalue().split(" ")
+        self.assertEqual(cpt[0], "[{}]".format(self.obj.__class__.__name__))
+
+        self.assertEqual(cpt[1], "({})".format(instance_id))
+        sys.stdout = cpt_output
 
 
 class TestBase_to_dict(unittest.TestCase):
