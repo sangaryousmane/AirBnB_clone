@@ -18,5 +18,5 @@ Run the console | ```./console.py```
 Quit the console | ```(hbnb) quit```
 Display the help for a command | ```(hbnb) help <command>```
 Create an object (prints its id)| ```(hbnb) create <class>```
-Show an object | ```(hbnb) show <class> <id>``` or ```(hbnb) <class>.show(<id>)```
-Destroy an object | ```(hbnb) destroy <class> <id>``` or ```(hbnb) <class>.destroy(<id>)```
+Show an object | ```(hbnb) show <class> <id>```
+Destroy an object | ```(hbnb) destroy <class> <id>```
