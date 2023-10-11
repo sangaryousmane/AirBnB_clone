@@ -16,6 +16,7 @@ from models.place import Place
 modules = {'BaseModel': BaseModel, 'User': User, "State": State,
            "City": City, "Amenity": Amenity, "Place": Place, "Review": Review}
 
+
 class HBNBCommand(cmd.Cmd):
     """Implementation of the command interpreter."""
     prompt = ("(hbnb) ")
@@ -88,6 +89,28 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances
             based or not on the class name.
         """
+        if not args:
+            # If no class name is provided, print all instances
+            objs = storage.all()
+            obj_list = list(objs.values())
+
+        else:
+            try:
+                # Try to retrieve instances based on given class name
+                class_instance = eval(args)
+                obj_list = [obj for obj in storage.all().values()
+                            if isinstance(obj, class_instance)]
+
+            except NameError:
+                print("** class doesn't exist **")
+                return
+
+        if not obj_list:
+            print("No instances found")
+            # pass
+        else:
+            formatted_list = [str(obj) for obj in obj_list]
+            print(formatted_list)
 
     @staticmethod
     def is_classname_valid(args, check_id=False) -> bool:
@@ -103,6 +126,7 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
         return True
+
 
 if __name__ == "__main__":
     """Program entry point."""
