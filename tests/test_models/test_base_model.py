@@ -52,7 +52,7 @@ class TestBaseModel_init(unittest.TestCase):
         self.assertNotEqual(self.obj.id, new_obj.id)
 
 
-class TestBase_str_method(unittest.TestCase):
+class TestBaseModel_str_method(unittest.TestCase):
     """Defines test cases for the __str__ method"""
 
     def setUp(self):
@@ -85,7 +85,29 @@ class TestBase_str_method(unittest.TestCase):
         sys.stdout = cpt_output
 
 
-class TestBase_to_dict(unittest.TestCase):
+class TestBaseModel_save(unittest.TestCase):
+    """Defines tests cases for the save method"""
+
+    def setUp(self):
+        """sets up an instance for testing"""
+        self.obj = BaseModel()
+
+    def tearDown(self):
+        """clean up, delete an instance after testing"""
+        del self.obj
+
+    def test_changes_to_updated_at(self):
+        """Test that updated_at changes after
+        updating an instance from the previous value
+        and after calling the save method on an instance
+        """
+        curr_update_time = self.obj.updated_at
+        self.obj.save()
+        time_after_save_call = self.obj.updated_at
+        self.assertNotEqual(curr_update_time, time_after_save_call)
+
+
+class TestBaseModel_to_dict(unittest.TestCase):
     """Defines tests cases for the to_dict method"""
 
     def setUp(self):
