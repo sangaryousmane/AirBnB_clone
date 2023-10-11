@@ -7,8 +7,14 @@ import cmd
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
+from models.city import City
+from models.amenity import Amenity
+from models.state import State
+from models.review import Review
+from models.place import Place
 
-modules = {'BaseModel': BaseModel, 'User': User}
+modules = {'BaseModel': BaseModel, 'User': User, "State": State,
+           "City": City, "Amenity": Amenity, "Place": Place, "Review": Review}
 
 
 class HBNBCommand(cmd.Cmd):
