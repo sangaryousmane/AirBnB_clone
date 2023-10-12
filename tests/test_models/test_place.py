@@ -25,24 +25,24 @@ class TestPlace(unittest.TestCase):
     def test_params(self):
         """Test method for all parameters of the Place class"""
 
-        p1 = Place()
-        p3 = Place("hello", "wait", "in")
-        key = f"{type(p1).__name__}.{p1.id}"
-        self.assertIsInstance(p1.name, str)
+        place = Place()
+        place2 = Place("hello", "wait", "in")
+        key = f"{type(place).__name__}.{place.id}"
+        self.assertIsInstance(place.name, str)
         self.assertIn(key, storage.all())
-        self.assertEqual(p3.name, "")
+        self.assertEqual(place2.name, "")
 
-        self.assertIsInstance(p1.name, str)
-        self.assertIsInstance(p1.user_id, str)
-        self.assertIsInstance(p1.city_id, str)
-        self.assertIsInstance(p1.description, str)
-        self.assertIsInstance(p1.number_bathrooms, int)
-        self.assertIsInstance(p1.number_rooms, int)
-        self.assertIsInstance(p1.price_by_night, int)
-        self.assertIsInstance(p1.max_guest, int)
-        self.assertIsInstance(p1.longitude, float)
-        self.assertIsInstance(p1.latitude, float)
-        self.assertIsInstance(p1.amenity_ids, list)
+        self.assertIsInstance(place.name, str)
+        self.assertIsInstance(place.user_id, str)
+        self.assertIsInstance(place.city_id, str)
+        self.assertIsInstance(place.description, str)
+        self.assertIsInstance(place.number_bathrooms, int)
+        self.assertIsInstance(place.number_rooms, int)
+        self.assertIsInstance(place.price_by_night, int)
+        self.assertIsInstance(place.max_guest, int)
+        self.assertIsInstance(place.longitude, float)
+        self.assertIsInstance(place.latitude, float)
+        self.assertIsInstance(place.amenity_id, list)
 
     def test_init(self):
         """Test method for public instances"""

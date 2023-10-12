@@ -27,9 +27,10 @@ class TestAmenity(unittest.TestCase):
         """Test method for public class attributes"""
 
         amenity1 = Amenity()
+        amenity2 = Amenity(**amenity1.to_dict())
         amenity3 = Amenity("hello", "wait", "in")
 
-        k = f"{0}.{1}".format(type(amenity1).__name__, amenity1.id)
+        key = "{}.{}".format(type(amenity1).__name__, amenity1.id)
         self.assertIsInstance(amenity1.name, str)
         self.assertIn(key, storage.all())
         self.assertEqual(amenity3.name, "")

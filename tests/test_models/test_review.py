@@ -63,7 +63,7 @@ class TestReview(unittest.TestCase):
         self.assertEqual(a_dict['__class__'], type(review2).__name__)
         self.assertIn('created_at', a_dict.keys())
         self.assertIn('updated_at', a_dict.keys())
-        self.assertNotEqual(review1, review2)
+        self.assertNotEqual(review, review2)
 
 
 if __name__ == "__main__":
