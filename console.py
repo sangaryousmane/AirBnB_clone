@@ -5,6 +5,7 @@ command interpreter, the AirBnB Console Application.
 
 import cmd
 import shlex
+import sys
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
@@ -30,16 +31,19 @@ class HBNBCommand(cmd.Cmd):
         """Exits the program when an
            EOF signal is send & recieve.
         """
+        self.non_interactive_shell_check()
         return True
 
     def emptyline(self):
         """Prints nothing when an emtpy line is passed."""
+        self.non_interactive_shell_check()
         pass
 
     def do_create(self, arg):
         """ Creates a new instance of BaseModel,
         saves it (to the JSON file) and prints the id. Ex: $ create BaseModel
         """
+        self.non_interactive_shell_check()
         args = arg.split()
 
         if not HBNBCommand.is_classname_valid(args):
@@ -53,6 +57,7 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the string representation of an instance
         based on the class name and id
         """
+        self.non_interactive_shell_check()
         args = arg.split()
 
         if not HBNBCommand.is_classname_valid(args, check_id=True):
@@ -71,6 +76,7 @@ class HBNBCommand(cmd.Cmd):
         """ Deletes an instance based on the class name and
         id (save the change into the JSON file).
         """
+        self.non_interactive_shell_check()
         args = arg.split()
         if not HBNBCommand.is_classname_valid(args, check_id=True):
             return
@@ -90,6 +96,7 @@ class HBNBCommand(cmd.Cmd):
         """ Prints all string representation of all instances
             based or not on the class name.
         """
+        self.non_interactive_shell_check()
         if not args:
             # If no class name is provided, print all instances
             objs = storage.all()
@@ -118,6 +125,7 @@ class HBNBCommand(cmd.Cmd):
            and id given as args by adding or updating
            attribute & save changes into JSON file.
         """
+        self.non_interactive_shell_check()
         args = shlex.split(args)  # split command into tokens
 
         if len(args) == 0:
@@ -187,6 +195,14 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return False
         return True
+
+    @staticmethod
+    def non_interactive_shell_check():
+        """Checks if the console is been
+        used in interactive mode or not
+        """
+        if sys.stdin.isatty() is False:
+            print("")
 
 
 if __name__ == "__main__":
