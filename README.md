@@ -20,3 +20,5 @@ Display the help for a command | ```(hbnb) help <command>```
 Create an object (prints its id)| ```(hbnb) create <class>```
 Show an object | ```(hbnb) show <class> <id>```
 Destroy an object | ```(hbnb) destroy <class> <id>```
+Query all the object | ```(hbnb) all <class>``` 
+Update an object | ```update <class> <id> <attribute name> <attribute value>```
