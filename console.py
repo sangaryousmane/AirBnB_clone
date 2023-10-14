@@ -181,6 +181,68 @@ class HBNBCommand(cmd.Cmd):
         setattr(obj, attr_name, attr_val)
         obj.save()
 
+    def do_count(self, args):
+        """Retrieve the number of instances of a class
+        usage: <class name>.count()
+        """
+        if args not in modules:
+            print("** class doesn't exist **")
+            return
+        else:
+            num_of_instances = len([obj for obj in storage.all().values()
+                                    if isinstance(obj, modules[args])])
+            print(num_of_instances)
+
+    def default(self, line):
+        """Default command, accept commands preceded by
+        available class name and followed by argument.
+        Usage:  <class name>.<command>()
+        """
+
+        parts = line.split('.')
+        if len(parts) != 2:
+            print("** Unknown syntax: {} **".format(line))
+            return
+        # <class name> <command> ex: User.all()
+        cls_name, cmd_args = parts
+        command, args = cmd_args.split('(', 1)  # split on ( with max-split 1
+
+        if args.endswith(')'):
+            args = args[:-1]
+        else:
+            # no closing ) brace
+            print("** Unknown syntax: {} **".format(line))
+            return
+
+        args = args.strip("'\" ")  # strip on ' "
+
+        # Try implementing this logic with match statement
+        # Not sure if the checker uses python 3.10 & above
+        # thus, I went with the traditional ifs
+
+        if command == 'all':
+            HBNBCommand.do_all(self, cls_name)
+        elif command == 'count':
+            HBNBCommand.do_count(self, cls_name)
+        elif command == 'show' or command == 'destroy':
+            args = args.strip("'\" ")
+            arg = f"{cls_name} {args}"
+            if command == 'show':
+                HBNBCommand.do_show(self, arg)
+            else:
+                HBNBCommand.do_destroy(self, arg)
+        elif command == 'update':
+            parts = args.split(',')  # <id>,<attr>,<value>
+            if len(parts) == 3:
+                inst_id, attr_name, attr_val = [part.strip("'\" ")
+                                                for part in parts]
+                arg = f"{cls_name} {inst_id} {attr_name} {attr_val}"
+                HBNBCommand.do_update(self, arg)
+            else:
+                print("** Unknown syntax: {} **".format(line))
+        else:
+            print("** Unknown syntax: {} **".format(line))
+
     @staticmethod
     def is_classname_valid(args, check_id=False) -> bool:
         """ Validates classname, length of arugment, missing classname et al.
