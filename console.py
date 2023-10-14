@@ -242,14 +242,34 @@ class HBNBCommand(cmd.Cmd):
             else:
                 HBNBCommand.do_destroy(self, arg)
         elif command == 'update':
-            parts = args.split(',')  # <id>,<attr>,<value>
-            if len(parts) == 3:
-                inst_id, attr_name, attr_val = [part.strip("'\" ")
-                                                for part in parts]
-                arg = f"{cls_name} {inst_id} {attr_name} {attr_val}"
-                HBNBCommand.do_update(self, arg)
+            if ',' in args:
+                # Handle case where attribute are provided in a dictionary
+                # {"first_name" : "John", "age": 89}
+                # <id>,<{"name": "joe", "age": 2}
+                inst_id, attr_dict = args.split(',', 1)
+                inst_id = inst_id.strip("'\" ")
+                attr_dict = attr_dict.strip("'\" ")
+                try:
+                    attr_dict = eval(attr_dict)
+                    if isinstance(attr_dict, dict):
+                        for key, value in attr_dict.items():
+                            arg = f"{cls_name} {inst_id} {key} {value}"
+                            HBNBCommand.do_update(self, arg)
+                    else:
+                        print("** Unknown syntax: {} **".format(line))
+                except ValueError:
+                    pass
+
             else:
-                print("** Unknown syntax: {} **".format(line))
+                # Handle case where attributes are provided not as dictionary
+                parts = args.split(',')  # <id>,<attr>,<value>
+                if len(parts) == 3:
+                    inst_id, attr_name, attr_val = [part.strip("'\" ")
+                                                    for part in parts]
+                    arg = f"{cls_name} {inst_id} {attr_name} {attr_val}"
+                    HBNBCommand.do_update(self, arg)
+                else:
+                    print("** Unknown syntax: {} **".format(line))
         else:
             print("** Unknown syntax: {} **".format(line))
 
