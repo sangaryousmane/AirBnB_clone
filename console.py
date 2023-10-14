@@ -83,11 +83,16 @@ class HBNBCommand(cmd.Cmd):
 
         all_obj = storage.all()
         key = f'{args[0]}.{args[1]}'
-        show_instances = all_obj.get(key, None)
+        # show_instances = all_obj.get(key, None). This causes a traceback
 
-        if show_instances is None:
-            print(" ** no instance found **")
-        print(show_instances)
+        # if show_instances is None:
+        #    print(" ** no instance found **")
+
+        if key not in all_obj:
+            print("** no instance found **")
+            return
+        show_instance = all_obj[key]
+        print(show_instance)
 
         del all_obj[key]
         storage.save()
@@ -185,6 +190,9 @@ class HBNBCommand(cmd.Cmd):
         """Retrieve the number of instances of a class
         usage: <class name>.count()
         """
+
+        # self.non_interactive_shell_check()
+
         if args not in modules:
             print("** class doesn't exist **")
             return
@@ -198,6 +206,8 @@ class HBNBCommand(cmd.Cmd):
         available class name and followed by argument.
         Usage:  <class name>.<command>()
         """
+
+        # self.non_interactive_shell_check()
 
         parts = line.split('.')
         if len(parts) != 2:
