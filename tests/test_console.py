@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """ Test class for the console module
 """
 from unittest import TestCase
