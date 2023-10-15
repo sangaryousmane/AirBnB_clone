@@ -7,7 +7,7 @@ serialization and deserialization of future instances
 import uuid
 from datetime import datetime
 # import models
-from models import storage
+# from models import storage
 
 
 class BaseModel:
@@ -42,6 +42,7 @@ class BaseModel:
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             # models.storage.new(self)
+            from models import storage  # dynamically import storage
             storage.new(self)
 
     def __str__(self):
@@ -69,6 +70,7 @@ class BaseModel:
 
         self.updated_at = datetime.now()
         # models.storage.save()
+        from models import storage  # dynamically import storage
         storage.save()
 
     """def to_dict(self):
