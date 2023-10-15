@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Implement unit tests for console.py.
+""" Defines test cases for the console module
+Implement unit tests for console.py.
 Handles as many commands as possible
 """
 
