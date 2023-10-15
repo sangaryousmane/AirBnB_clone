@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """"
 State - inherits from the BaseModel and handles the state related data
 """

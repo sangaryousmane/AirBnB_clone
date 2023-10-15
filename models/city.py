@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 City - inherits from the BaseModel and handle city data
 """

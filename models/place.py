@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Place - inherits from the BaseModel and handle require data for places
 """
