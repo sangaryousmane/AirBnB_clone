@@ -1,81 +1,142 @@
-#!/usr/bin/env python3
-""" Test class for the console module
+#!/usr/bin/python3
+"""Implement unit tests for console.py.
+Handles as many commands as possible
 """
+
+from io import StringIO
+import os
 from unittest import TestCase
-from models import storage
-from os import path, remove
-from unittest import mock.patch
+from unittest.mock import patch
 from console import HBNBCommand as hbnb
+from models import storage
 
 
 class TestConsole(TestCase):
-    """ Test case for the console module
+    """Test case for the console module.
     """
 
     def setUp(self):
-        """ set up all test cases"""
+        """ Setup all test cases"""
         pass
 
-
     def tearDown(self):
-        """unit test to reset the storage file
-        """
+        """Resets storage for the data in file."""
         storage._FileStorage__objects = {}
-        if path.exists(storage._FileStorage__objects):
-            remove(storage._FileStorage__objects)
+        if os.path.exists(storage._FileStorage__file_path):
+            os.remove(storage._FileStorage__file_path)
 
-    def test_commands(self):
-        """ Test the following console commands:
-        ?, \n, EOF, and the quit command"""
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb.onecmd("EOF")
-            self.assertEqual(t.getValue(), "\n")
-
-        with mock.path('sys.stdout', new=StringIO()) as t:
-            hbnb.onecmd("\n")
-            self.assertEqual(t.getValue(), "")
-
-        with mock.path('sys.stdout', new=StringIO()) as t:
-            hbnb.onecmd("?")
-            self.assertIsInstance(t.getValue(), str)
-
-        with mock.path('sys.stdout', new=StringIO()) as t:
-            hbnb.onecmd("quit")
-            self.assertEqual(t.getValue(), "")
-
-    def test_commands2(self):
-        """ Test commands to handle create, destroy and show
+    def test_commands1(self):
+        """Tests the following basic commands:
+        quit, EOF, ?, help, \n, create, ? create, all etc.
         """
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb().onecmd("? create")
-            self.assertIsInstance(t.getValue(), str)
-            self.assertEqual(t.getValue().strip(), "Create a new instance")
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb().onecmd("help create")
-            self.assertIsInstance(t.getValue(), str)
-            self.assertEqual(t.getValue(), "Create a new instance")
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb().onecmd("? show")
-            self.assertIsInstance(t.getValue(), str)
-            self.assertEqual(t.getValue().strip(), "Prints the string rep of an instance")
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb().onecmd("help show")
-            self.assertIsIntance(t.getValue(), str)
-            self.assertEqual(t.getValue().strip, "Prints the string rep of an instance")
-
-        with mock.patch('sys.stdout', new=StringIO()) as t:
-            hbnb().onecmd("? destroy")
-            self.assertIsInstance(f.getvalue(), str)
-            self.assertEqual(f.getvalue().strip(),
-                             "Deletes an instance based on the class name and id")
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("quit")
+            self.assertEqual(t.getvalue(), "")
 
         with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("EOF")
+            self.assertEqual(t.getvalue(), "\n")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("\n")
+            self.assertEqual(t.getvalue(), "")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("?")
+            self.assertIsInstance(t.getvalue(), str)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("help")
+            self.assertIsInstance(t.getvalue(), str)
+
+    def test_commands2(self):
+        """ Test additional commands for the console"""
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("? create")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(), "Creates a new instance.")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("help create")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(), "Creates a new instance.")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("? all")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "Prints string representation of all instances")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("help all")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "Prints string representation of all instances")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("? show")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "Prints string representation of an instance.")
+
+    def test_commands3(self):
+        """ Tests more commands for the console."""
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            msg = "Prints string representation of an instance."
+            hbnb().onecmd("help show")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             msg)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            msg = "Updates an instance based on the class name and id."
+            hbnb().onecmd("? update")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             msg)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            msg = "Updates an instance based on the class name and id."
+            hbnb().onecmd("help update")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             msg)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            msg = "Deletes an instance based on the class name and id."
+            hbnb().onecmd("? destroy")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             msg)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            msg = "Deletes an instance based on the class name and id."
             hbnb().onecmd("help destroy")
-            self.assertIsInstance(f.getvalue(), str)
-            self.assertEqual(f.getvalue().strip(), 
-                             "Deletes an instance based on the class name and id")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(), msg)
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("? quit")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "Quit command to exit the program.")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("help quit")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "Quit command to exit the program.")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("? help")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "To get help on a command, type help <topic>.")
+
+        with patch('sys.stdout', new=StringIO()) as t:
+            hbnb().onecmd("help help")
+            self.assertIsInstance(t.getvalue(), str)
+            self.assertEqual(t.getvalue().strip(),
+                             "To get help on a command, type help <topic>.")

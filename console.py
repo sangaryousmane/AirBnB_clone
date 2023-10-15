@@ -27,11 +27,16 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program."""
         return True
 
+    def do_help(self, arg):
+        """To get help on a command, type help <topic>.
+        """
+        return super().do_help(arg)
+
     def do_EOF(self, args):
         """Exits the program when an
            EOF signal is send & recieve.
         """
-        self.non_interactive_shell_check()
+        print("")
         return True
 
     def emptyline(self):
@@ -40,8 +45,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """ Creates a new instance of BaseModel,
-        saves it (to the JSON file) and prints the id. Ex: $ create BaseModel
+        """ Creates a new instance.
         """
         self.non_interactive_shell_check()
         args = arg.split()
@@ -54,8 +58,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_obj.id)
 
     def do_show(self, arg):
-        """ Prints the string representation of an instance
-        based on the class name and id
+        """ Prints string representation of an instance.
         """
         self.non_interactive_shell_check()
         args = arg.split()
@@ -73,8 +76,7 @@ class HBNBCommand(cmd.Cmd):
         print(show_instances)
 
     def do_destroy(self, arg):
-        """ Deletes an instance based on the class name and
-        id (save the change into the JSON file).
+        """ Deletes an instance based on the class name and id.
         """
         self.non_interactive_shell_check()
         args = arg.split()
@@ -98,8 +100,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, args):
-        """ Prints all string representation of all instances
-            based or not on the class name.
+        """ Prints string representation of all instances
         """
         self.non_interactive_shell_check()
         if not args:
@@ -126,9 +127,7 @@ class HBNBCommand(cmd.Cmd):
             print(formatted_list)
 
     def do_update(self, args):
-        """Updates an instance based on the class name
-           and id given as args by adding or updating
-           attribute & save changes into JSON file.
+        """Updates an instance based on the class name and id.
         """
         self.non_interactive_shell_check()
         args = shlex.split(args)  # split command into tokens
