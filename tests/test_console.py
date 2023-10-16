@@ -4,6 +4,7 @@ Implement unit tests for console.py.
 Handles as many commands as possible
 """
 
+import json
 from io import StringIO
 import os
 from unittest import TestCase
@@ -137,6 +138,23 @@ class TestBaseModel(TestCase):
             self.assertIsInstance(bc.getvalue().strip(), str)
             self.assertIn("BaseModel.{}".format(
                 bc.getvalue().strip()), storage.all().keys())
+
+    def test_all_basemodel(self):
+        """Test all BaseModel object.
+        """
+        with patch('sys.stdout', new=StringIO()) as bc:
+            HBNBCommand().onecmd('all BaseModel')
+            for data in json.loads(bc.getvalue()):
+                self.assertEqual(data.split()[0], '[BaseModel]')
+
+    def test_show_basemodel(self):
+        """Test show BaseModel cmd.
+        """
+        with patch('sys.stdout', new=StringIO()) as bc:
+            base = BaseModel()
+            HBNBCommand().onecmd('show BaseModel {}'.format(base.id))
+            result = f"[{type(base).__name__}] ({base.id}) {base.__dict__}"
+            self.assertEqual(bc.getvalue().strip(), result)
 #
 # class TestConsole(TestCase):
 #     """Test case for the console module.
