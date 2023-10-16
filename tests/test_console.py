@@ -13,6 +13,7 @@ from console import HBNBCommand
 from models import storage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class TestConsole_help(TestCase):
@@ -119,7 +120,6 @@ class TestConsole_prompt(TestCase):
 class TestBaseModel(TestCase):
     """ Test cases for the Base Model"""
 
-
     def test_basemodel_dot_create(self):
         """ Test BaseModel.create() case"""
 
@@ -139,22 +139,101 @@ class TestBaseModel(TestCase):
             self.assertIn("BaseModel.{}".format(
                 bc.getvalue().strip()), storage.all().keys())
 
-    def test_all_basemodel(self):
-        """Test all BaseModel object.
-        """
-        with patch('sys.stdout', new=StringIO()) as bc:
-            HBNBCommand().onecmd('all BaseModel')
-            for data in json.loads(bc.getvalue()):
-                self.assertEqual(data.split()[0], '[BaseModel]')
-
-    def test_show_basemodel(self):
-        """Test show BaseModel cmd.
-        """
-        with patch('sys.stdout', new=StringIO()) as bc:
-            base = BaseModel()
-            HBNBCommand().onecmd('show BaseModel {}'.format(base.id))
             result = f"[{type(base).__name__}] ({base.id}) {base.__dict__}"
             self.assertEqual(bc.getvalue().strip(), result)
+
+
+class User(TestCase):
+    """ test cases for the User module"""
+
+    def test_create_user(self):
+        """Test create user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(HBNBCommand().precmd(
+                                 'User.create()'))
+            self.assertIsInstance(f.getvalue().strip(), str)
+            self.assertIn("User.{}".format(
+                f.getvalue().strip()), storage.all().keys())
+
+    def test_count_user(self):
+        """Test count user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(HBNBCommand().precmd('User.count()'))
+            count = 0
+            for i in storage.all().values():
+                if type(i) == User:
+                    count += 1
+            self.assertEqual(int(f.getvalue()), count)
+
+    def test_all_user(self):
+        """Test all user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd(HBNBCommand().precmd('User.all()'))
+            for item in json.loads(f.getvalue()):
+                self.assertEqual(item.split()[0], '[User]')
+
+    def test_show_user(self):
+        """Test show user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            us = User()
+            us.eyes = "green"
+            HBNBCommand().onecmd(HBNBCommand().precmd(
+                                 f'User.show({us.id})'))
+            res = f"[{type(us).__name__}] ({us.id}) {us.__dict__}"
+            self.assertEqual(f.getvalue().strip(), res)
+
+    def test_update_user(self):
+        """Test update user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            us = User()
+            us.name = "Cecilia"
+            HBNBCommand().onecmd(HBNBCommand().precmd(
+                                 f'User.update({us.id}, name, "Ife")'))
+            self.assertEqual(us.__dict__["name"], "Ife")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            us = User()
+            us.age = 75
+            HBNBCommand().onecmd(HBNBCommand().precmd(
+                                 f'User.update({us.id}, age, 25)'))
+            self.assertIn("age", us.__dict__.keys())
+            self.assertEqual(us.__dict__["age"], 25)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            us = User()
+            us.age = 60
+            cmmd = f'User.update({us.id}, age, 10, color, green)'
+            HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
+            self.assertIn("age", us.__dict__.keys())
+            self.assertNotIn("color", us.__dict__.keys())
+            self.assertEqual(us.__dict__["age"], 10)
+
+    def test_update_user_dict(self):
+        """Test update user object.
+        """
+        with patch('sys.stdout', new=StringIO()) as f:
+            us = User()
+            us.age = 75
+            cmmd = f'User.update({us.id}, {{"age": 25,"color":"black"}})'
+            HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
+            self.assertEqual(us.__dict__["age"], 25)
+            self.assertIsInstance(us.__dict__["age"], int)
+
+    def test_destroy_user(self):
+        """Test destroy user object.
+        """
+        with patch('sys.stdout', new=StringIO()):
+            us = User()
+            HBNBCommand().onecmd(HBNBCommand().precmd(
+                                 f'User.destroy({us.id})'))
+            self.assertNotIn("User.{}".format(
+                us.id), storage.all().keys())
+
 #
 # class TestConsole(TestCase):
 #     """Test case for the console module.

@@ -14,6 +14,7 @@ from models.amenity import Amenity
 from models.state import State
 from models.review import Review
 from models.place import Place
+import re
 
 modules = {'BaseModel': BaseModel, 'User': User, "State": State,
            "City": City, "Amenity": Amenity, "Place": Place, "Review": Review}
@@ -22,6 +23,45 @@ modules = {'BaseModel': BaseModel, 'User': User, "State": State,
 class HBNBCommand(cmd.Cmd):
     """Implementation of the command interpreter."""
     prompt = ("(hbnb) ")
+
+    def precmd(self, line):
+        """Defines instructions to execute before <line> is interpreted.
+        """
+        if not line:
+            return '\n'
+
+        # ptenr is the pattern for precompilation
+        ptenr = re.compile(r"(\w+)\.(\w+)\((.*)\)")
+        _list = pattern.findall(line)
+        if not match_list:
+            return super().precmd(line)
+
+        tuple_match = _list[0]
+        if not tuple_match[2]:
+            if tuple_match[1] == "count":
+                instance_objs = storage.all()
+                print(len([
+                    v for _, v in instance_objs.items()
+                    if type(v).__name__ == tuple_match[0]]))
+                return "\n"
+            return "{} {}".format(tuple_match[1], tuple_match[0])
+        else:
+            args = tuple_match[2].split(", ")
+            if len(args) == 1:
+                return "{} {} {}".format(
+                    tuple_match[1], tuple_match[0],
+                    re.sub("[\"\']", "", tuple_match[2]))
+            else:
+                match_json = re.findall(r"{.*}", tuple_match[2])
+                if (match_json):
+                    return "{} {} {} {}".format(
+                        tuple_match[1], tuple_match[0],
+                        re.sub("[\"\']", "", args[0]),
+                        re.sub("\'", "\"", match_json[0]))
+                return "{} {} {} {} {}".format(
+                    tuple_match[1], tuple_match[0],
+                    re.sub("[\"\']", "", args[0]),
+                    re.sub("[\"\']", "", args[1]), args[2])
 
     def do_quit(self, args):
         """Quit command to exit the program."""
