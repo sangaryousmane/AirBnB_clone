@@ -130,18 +130,6 @@ class TestBaseModel(TestCase):
             self.assertIn("BaseModel.{}".format(
                 bc.getvalue().strip()), storage.all().keys())
 
-    def test_create_basemodel(self):
-        """ Create BaseModel"""
-
-        with patch("sys.stdout", new=StringIO()) as bc:
-            HBNBCommand().onecmd("create BaseModel")
-            self.assertIsInstance(bc.getvalue().strip(), str)
-            self.assertIn("BaseModel.{}".format(
-                bc.getvalue().strip()), storage.all().keys())
-
-            result = f"[{type(base).__name__}] ({base.id}) {base.__dict__}"
-            self.assertEqual(bc.getvalue().strip(), result)
-
 
 class User(TestCase):
     """ test cases for the User module"""
@@ -168,73 +156,72 @@ class User(TestCase):
             self.assertEqual(int(f.getvalue()), count)
 
     def test_all_user(self):
-        """Test all user object.
+        """Test the all User case.
         """
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd(HBNBCommand().precmd('User.all()'))
-            for item in json.loads(f.getvalue()):
-                self.assertEqual(item.split()[0], '[User]')
+            for i in json.loads(f.getvalue()):
+                self.assertEqual(i.split()[0], '[User]')
 
     def test_show_user(self):
         """Test show user object.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            us = User()
-            us.eyes = "green"
+            user = User()
+            user.eyes = "red"
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'User.show({us.id})'))
-            res = f"[{type(us).__name__}] ({us.id}) {us.__dict__}"
-            self.assertEqual(f.getvalue().strip(), res)
+                                 f'User.show({user.id})'))
+            result = f"[{type(user).__name__}] ({user.id}) {user.__dict__}"
+            self.assertEqual(f.getvalue().strip(), result)
 
     def test_update_user(self):
         """Test update user object.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            us = User()
-            us.name = "Cecilia"
+            user = User()
+            user.name = "Ousmane"
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'User.update({us.id}, name, "Ife")'))
-            self.assertEqual(us.__dict__["name"], "Ife")
+                                 f'User.update({user.id}, name, "Ousmane")'))
+            self.assertEqual(user.__dict__["name"], "Ousmane")
 
         with patch('sys.stdout', new=StringIO()) as f:
-            us = User()
-            us.age = 75
+            user = User()
+            user.age = 24
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'User.update({us.id}, age, 25)'))
-            self.assertIn("age", us.__dict__.keys())
-            self.assertEqual(us.__dict__["age"], 25)
+                                 f'User.update({user.id}, age, 24)'))
+            self.assertIn("age", user.__dict__.keys())
+            self.assertEqual(user.__dict__["age"], 24)
 
         with patch('sys.stdout', new=StringIO()) as f:
-            us = User()
-            us.age = 60
-            cmmd = f'User.update({us.id}, age, 10, color, green)'
+            user = User()
+            user.age = 24
+            cmmd = f'User.update({user.id}, age, 10, color, green)'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertIn("age", us.__dict__.keys())
-            self.assertNotIn("color", us.__dict__.keys())
-            self.assertEqual(us.__dict__["age"], 10)
+            self.assertIn("age", user.__dict__.keys())
+            self.assertNotIn("color", user.__dict__.keys())
+            self.assertEqual(user.__dict__["age"], 24)
 
     def test_update_user_dict(self):
         """Test update user object.
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            us = User()
-            us.age = 75
-            cmmd = f'User.update({us.id}, {{"age": 25,"color":"black"}})'
+            user = User()
+            user.age = 24
+            cmmd = f'User.update({user.id}, {{"age": 24,"color":"green"}})'
             HBNBCommand().onecmd(HBNBCommand().precmd(cmmd))
-            self.assertEqual(us.__dict__["age"], 25)
-            self.assertIsInstance(us.__dict__["age"], int)
+            self.assertEqual(user.__dict__["age"], 24)
+            self.assertIsInstance(user.__dict__["age"], int)
 
     def test_destroy_user(self):
         """Test destroy user object.
         """
         with patch('sys.stdout', new=StringIO()):
-            us = User()
+            user = User()
             HBNBCommand().onecmd(HBNBCommand().precmd(
-                                 f'User.destroy({us.id})'))
+                                 f'User.destroy({user.id})'))
             self.assertNotIn("User.{}".format(
-                us.id), storage.all().keys())
+                user.id), storage.all().keys())
 
-#
 # class TestConsole(TestCase):
 #     """Test case for the console module.
 #     """

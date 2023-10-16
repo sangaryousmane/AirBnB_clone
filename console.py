@@ -32,8 +32,8 @@ class HBNBCommand(cmd.Cmd):
 
         # ptenr is the pattern for precompilation
         ptenr = re.compile(r"(\w+)\.(\w+)\((.*)\)")
-        _list = pattern.findall(line)
-        if not match_list:
+        _list = ptenr.findall(line)
+        if not _list:
             return super().precmd(line)
 
         tuple_match = _list[0]
@@ -41,8 +41,8 @@ class HBNBCommand(cmd.Cmd):
             if tuple_match[1] == "count":
                 instance_objs = storage.all()
                 print(len([
-                    v for _, v in instance_objs.items()
-                    if type(v).__name__ == tuple_match[0]]))
+                    value for _, value in instance_objs.items()
+                    if type(value).__name__ == tuple_match[0]]))
                 return "\n"
             return "{} {}".format(tuple_match[1], tuple_match[0])
         else:
