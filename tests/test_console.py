@@ -11,6 +11,7 @@ from unittest.mock import patch
 from console import HBNBCommand
 from models import storage
 from models.engine.file_storage import FileStorage
+from models.base_model import BaseModel
 
 
 class TestConsole_help(TestCase):
@@ -113,6 +114,29 @@ class TestConsole_prompt(TestCase):
             HBNBCommand().onecmd("")
             self.assertEqual("", cpt_out.getvalue().strip())
 
+
+class TestBaseModel(TestCase):
+    """ Test cases for the Base Model"""
+
+
+    def test_basemodel_dot_create(self):
+        """ Test BaseModel.create() case"""
+
+        with patch('sys.stdout', new=StringIO()) as bc:
+            HBNBCommand().onecmd(HBNBCommand().default(
+                                 'BaseModel.create()'))
+            self.assertIsInstance(bc.getvalue().strip(), str)
+            self.assertIn("BaseModel.{}".format(
+                bc.getvalue().strip()), storage.all().keys())
+
+    def test_create_basemodel(self):
+        """ Create BaseModel"""
+
+        with patch("sys.stdout", new=StringIO()) as bc:
+            HBNBCommand().onecmd("create BaseModel")
+            self.assertIsInstance(bc.getvalue().strip(), str)
+            self.assertIn("BaseModel.{}".format(
+                bc.getvalue().strip()), storage.all().keys())
 #
 # class TestConsole(TestCase):
 #     """Test case for the console module.
