@@ -73,9 +73,7 @@ class HBNBCommand(cmd.Cmd):
         return super().do_help(arg)
 
     def do_EOF(self, args):
-        """Exits the program when an
-           EOF signal is send & recieve.
-        """
+        """Exits the program after receiving EOF signal."""
         print("")
         return True
 
@@ -85,8 +83,7 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, arg):
-        """ Creates a new instance.
-        """
+        """Creates a new instance."""
         self.non_interactive_shell_check()
         args = arg.split()
 
@@ -98,8 +95,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_obj.id)
 
     def do_show(self, arg):
-        """ Prints string representation of an instance.
-        """
+        """Prints string representation of an instance."""
         self.non_interactive_shell_check()
         args = arg.split()
 
@@ -116,8 +112,7 @@ class HBNBCommand(cmd.Cmd):
         print(show_instances)
 
     def do_destroy(self, arg):
-        """ Deletes an instance based on the class name and id.
-        """
+        """Deletes an instance based on the class name and id."""
         self.non_interactive_shell_check()
         args = arg.split()
         if not HBNBCommand.is_classname_valid(args, check_id=True):
@@ -140,8 +135,7 @@ class HBNBCommand(cmd.Cmd):
         storage.save()
 
     def do_all(self, args):
-        """ Prints string representation of all instances
-        """
+        """Prints string representation of all instances"""
         self.non_interactive_shell_check()
         if not args:
             # If no class name is provided, print all instances
@@ -167,8 +161,7 @@ class HBNBCommand(cmd.Cmd):
             print(formatted_list)
 
     def do_update(self, args):
-        """Updates an instance based on the class name and id.
-        """
+        """Updates an instance based on the class name and id."""
         self.non_interactive_shell_check()
         args = shlex.split(args)  # split command into tokens
 
@@ -226,9 +219,7 @@ class HBNBCommand(cmd.Cmd):
         obj.save()
 
     def do_count(self, args):
-        """Retrieve the number of instances of a class
-        usage: <class name>.count()
-        """
+        """Retrieve the number of instances of a class"""
 
         # self.non_interactive_shell_check()
 
