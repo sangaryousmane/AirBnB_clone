@@ -23,46 +23,46 @@ class TestConsole_help(TestCase):
         """Test the correct output of the EOF
         command help documentation
         """
-        msg = "Exits the program after receiving EOF signal.\n"
+        msg = "Exits the program after receiving EOF signal."
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help EOF")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help_all(self):
         """Test the correct output of the all
         command help documentation
         """
-        msg = "Prints string representation of all instances\n"
+        msg = "Prints string representation of all instances"
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help all")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help_count(self):
         """Test the correct output of the count
         command help documentation
         """
-        msg = "Retrieve the number of instances of a class\n"
+        msg = "Retrieve the number of instances of a class"
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help count")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help_create(self):
         """Test the correct output of the create
         command help documentation
         """
-        msg = "Creates a new instance.\n"
+        msg = "Creates a new instance."
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help create")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help_destroy(self):
         """Test the correct output of the destroy
         command help documentation
         """
-        msg = "Deletes an instance based on the class name and id.\n"
+        msg = "Deletes an instance based on the class name and id."
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help destroy")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help(self):
         """Tests Test the correct output of the help
@@ -88,19 +88,19 @@ class TestConsole_help(TestCase):
         """Test the correct output of the show
         command help documentation
         """
-        msg = "Prints string representation of an instance.\n"
+        msg = "Prints string representation of an instance."
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help show")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
     def test_help_update(self):
         """Test the correct output of the update
         command help documentation
         """
-        msg = "Updates an instance based on the class name and id.\n"
+        msg = "Updates an instance based on the class name and id."
         with patch("sys.stdout", new=StringIO()) as cpt_out:
             HBNBCommand().onecmd("help update")
-        self.assertEqual(msg, cpt_out.getvalue())
+            self.assertEqual(msg, cpt_out.getvalue().strip())
 
 
 class TestConsole_prompt(TestCase):
