@@ -39,3 +39,19 @@ all | Query all the object and print a list of all objects in a string format   
 update | Update an object base on the given class name and id, it's update or add attribute | ```update <class_name> <id> <attribute name> <attribute value>```  ```(hbnb) <class_name>.update(<id>, <attribute name>, <attribute value>)```                      
 count | Retrieve the number of instances of a class                                       | ```(hbnb) <class_name>.count()```                                                       
 
+## Validate your html and css files
+
+For HTML single file in current or child directory
+```./w3c_validator.py 0-index.html``` or ```./w3c_validator.py ./folder_name/0-index.html``` 
+
+For HTML integrative validation
+```./w3c_validator.py *.html``` or ```./w3c_validator.py ./folder_name/*.html```
+
+For CSS single file in current or child directory
+```./w3c_validator.py index.css``` or ```./w3c_validator.py ./folder_name/index.css``` 
+
+For HTML integrative validation
+```./w3c_validator.py *.html``` or ```./w3c_validator.py ./folder_name/*.css```
+
+### Python is a prerequisite for testing your static files, please install it and also install the ```requests module```
+``` python3 -m pip install requests```
