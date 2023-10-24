@@ -41,17 +41,17 @@ count | Retrieve the number of instances of a class                             
 
 ## Validate your html and css files
 
-### For HTML single file in current or child directory
+#### For HTML single file in current or child directory
 ```./w3c_validator.py 0-index.html``` or ```./w3c_validator.py ./folder_name/0-index.html``` 
 
-### For HTML integrative validation
+#### For HTML integrative validation
 ```./w3c_validator.py *.html``` or ```./w3c_validator.py ./folder_name/*.html```
 
-### For CSS single file in current or child directory
+#### For CSS single file in current or child directory
 ```./w3c_validator.py index.css``` or ```./w3c_validator.py ./folder_name/index.css``` 
 
-### For HTML integrative validation
+#### For HTML integrative validation
 ```./w3c_validator.py *.html``` or ```./w3c_validator.py ./folder_name/*.css```
 
-### Python is a prerequisite for testing your static files, please install it and also install the ```requests module```
+#### Python is a prerequisite for testing your static files, please install it and also install the ```requests module```
 ``` python3 -m pip install requests```
